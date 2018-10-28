@@ -4,7 +4,6 @@ var db = require ('./db');
 var $ = require ('jquery')
 
 
-
 var app = express();
 app.set('view engine', 'pug')
 
@@ -37,12 +36,13 @@ app.post('/getDecks', function(req, res) {
     });
 });
 
-app.get('/form', function(req, res) {  
+app.get('/add-card', function(req, res) {  
     res.setHeader('Content-Type', 'text/html');
     var card = req.query.card
     var amount = req.query.amount
-    var deckNumber = req.query.deckNumber    
-    res.render('insertCard', { card: card, amount: amount, deckNumber: deckNumber });    
+    var deckNumber = req.query.deckNumber
+    var cardExists = req.query.cardExists     
+    res.render('insertCard', { card: card, amount: amount, deckNumber: deckNumber, cardExists:cardExists });    
 });
 
 app.get('/add-deck', function(req, res) {  
@@ -64,21 +64,26 @@ app.post('/submit-deck', function(req, res) {
 });
 
 
-app.post ('/send', function (req,res){    
+app.post ('/submit-card', function (req,res){    
     var cardName = req.body.card
     var amount = req.body.amount
     var deckNumber = req.body.deckNumber
     
-    var cardId = db.getCardId ( cardName , function (result) {        
-        if (result) {
-            db.insert(result, amount, deckNumber)
-            console.log (cardName +" inserted correctly")
+    var cardId = db.getCardId ( cardName , function (cardId) {        
+        if (cardId) {
+            db.insert(cardId, amount, deckNumber)
+            var cardExists="true"  
+            console.log (cardName +" inserted correctly")            
         }            
-        else
+        else {
             console.log (cardName +" does not exists")
-    })      
+            var cardExists="false"
+        }
+        res.redirect(`/add-card?card=${cardName}&amount=${amount}&deckNumber=${deckNumber}&cardExists=${cardExists}`)
         
-    res.redirect(`/form?card=${cardName}&amount=${amount}&deckNumber=${deckNumber}`)
+    })
+        
+        
 })
 
 app.listen(8080);

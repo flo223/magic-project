@@ -1,7 +1,7 @@
 html
   head
   body
-    form(action="/send" method="post") Card name: 
+    form(action="/submit-card" method="post") Card name: 
       input(type="text" name="card") 
       br
       | Amount: 
@@ -10,6 +10,10 @@ html
       | Deck Number:
       input(type="text" name="deckNumber" value=deckNumber)
       input(type="submit" value="Add card")
-      br
-      if card
-        p #{amount} #{card} were added to the deck       
+      br      
+      if (card && cardExists=="true")
+        p #{amount} #{card} were added to the deck
+      else if (card && cardExists=="false")
+        p(style="color:red") #{card} is not a valid card name.
+
+              
