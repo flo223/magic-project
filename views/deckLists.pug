@@ -1,0 +1,17 @@
+html
+  head
+  body    
+    |Choose a deck:
+    select(id= "decks")
+      each val in decks
+        option(value=val.ID) #{val.GUILD} 
+    ul(id="deckList")
+      each val in deckList
+        li= val.amount + ' ' + val.name    
+  script(src="javascript/jquery-3.3.1.js")
+  script(src='javascript/script.js')
+    
+   
+      
+    
+    

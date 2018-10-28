@@ -1,0 +1,15 @@
+html
+  head
+  body
+    form(action="/send" method="post") Card name: 
+      input(type="text" name="card") 
+      br
+      | Amount: 
+      input(type="text" name="amount" value="1")
+      br
+      | Deck Number:
+      input(type="text" name="deckNumber" value=deckNumber)
+      input(type="submit" value="Add card")
+      br
+      if card
+        p #{amount} #{card} were added to the deck       
