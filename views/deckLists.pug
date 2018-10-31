@@ -1,14 +1,16 @@
 html
-  head
-  body    
-    |Choose a deck:
-    select(id= "decks")
-      each val in decks
-        option(value=val.ID) #{val.GUILD} 
-    ul(id="deckList")
-      each val in deckList
-        li= val.amount + ' ' + val.name    
+  include includes/header.pug          
+  |Choose a deck:
+  select(id= "decks")
+    each val in decks
+      option(value=val.ID) #{val.GUILD}    
+  ul(id="deckList")
+    each val in deckList
+      li= val.amount + ' ' + val.name
+  div(id="totalCards")
+          
   script(src="javascript/jquery-3.3.1.js")
+  script(src="js/vendor/foundation.js")
   script(src='javascript/script.js')
     
    

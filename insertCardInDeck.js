@@ -26,8 +26,7 @@ app.get('/decks', function(req, res) {
 });
 
 app.post('/getDecks', function(req, res) {
-    db.getDecks(function (decks) {
-        console.log(req.body.deckId)
+    db.getDecks(function (decks) {        
         db.getDeckList(req.body.deckId, function (deckList) {          
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.write(JSON.stringify(deckList));            
