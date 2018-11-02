@@ -1,4 +1,6 @@
-var pool = require ('./dbconnection.js')
+var dbconnection = require ('./dbconnection.js')
+
+var pool = dbconnection.pool
 
 var db = {
     insert: function (card, amount, deckNumber) {
