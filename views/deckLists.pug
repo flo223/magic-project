@@ -4,9 +4,11 @@ html
   select(id= "decks")
     each val in decks
       option(value=val.ID) #{val.GUILD}    
-  ul(id="deckList")
-    each val in deckList
-      li= val.amount + ' ' + val.name
+  div(id="deckList")   
+    ul(id="creatures")
+    ul(id="spells")
+    ul(id="lands")   
+    ul(id="sideboard")
   div(id="totalCards")
           
   script(src="javascript/jquery-3.3.1.js")

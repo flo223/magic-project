@@ -75,7 +75,7 @@ var db = {
     },
 
     getDeckList: function (deckId, callback) {
-        var sql = "select cd.amount, c.Name from cards_decks cd left join cards c on cd.CardID=c.ID where deckID = ?;";            
+        var sql = "select cd.amount, c.Name, c.Type, c.Second_Type, c.Third_Type from cards_decks cd left join cards c on cd.CardID=c.ID where deckID = ?;";            
         try {            
             pool.query(sql,deckId, function(error, results, fields) {                
                 if (error) {
@@ -87,6 +87,10 @@ var db = {
                     cardObject = {}
                     cardObject.name = results[i].Name
                     cardObject.amount = results[i].amount
+                    cardObject.types = []
+                    cardObject.types.push(results[i].Type)
+                    cardObject.types.push(results[i].Second_Type)
+                    cardObject.types.push(results[i].Third_Type)
                     deckList [i] = cardObject
                 }
                 pool.releaseConnection;

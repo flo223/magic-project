@@ -4,12 +4,10 @@ var dbconnection = require ('../dbconnection.js')
 
 var pool = dbconnection.multiplePool
 
-pool.getConnection(function(err, connection) {
-    
+pool.getConnection(function(err, connection) {    
     if (err) throw err;
     console.log("Connected!");    
-    var queries = bulkUpdate (data)
-    console.log (`queries is ${queries}`)
+    var queries = bulkUpdate (data)    
     connection.query(queries, function (err, result) {
         if (err) throw err;                
         connection.release();
@@ -18,12 +16,12 @@ pool.getConnection(function(err, connection) {
     });            
 })
   
-function bulkUpdate(data) {    
+function bulkUpdate(data) {   
     var i = 0;
     var queries = '';
     for (var key of Object.keys(data)) {
         i++                
-        if (i >= 500 && i<800) {
+        if (i >= 19030 && i < 19033) {
             var types = data[key].types
             var name =  data[key].name            
             if (types) {
