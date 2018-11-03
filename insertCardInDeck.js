@@ -25,6 +25,28 @@ app.get('/decks', function(req, res) {
      
 });
 
+app.get('/update-deck', function(req, res) {       
+    id = 0
+    if (req.query.id) {
+        id = parseInt(req.query.id) - 1
+    }
+    db.getDecks(function (decks) { 
+        res.render('updateDeck', {deck:decks[id]})
+    });
+});
+
+app.post('/update-deck', function(req, res) {       
+    var name = req.body.name;
+    var looses = parseInt(req.body.looses);
+    var guild = req.body.guild;
+    var wins = parseInt(req.body.wins);
+    var format = req.body.format;
+    var table = "decks"
+    var id = parseInt(req.body.id);
+    db.updateDeck(table, {"name":name, "guild":guild, "format":format, "looses":looses, "wins":wins }, id)
+    res.redirect(`/update-deck?id=${id}`)     
+});
+
 app.post('/getDecks', function(req, res) {
     db.getDecks(function (decks) {        
         db.getDeckList(req.body.deckId, function (deckList) {          

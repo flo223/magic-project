@@ -1,4 +1,3 @@
-console.log("show me the money")
 
 $('#decks').change (function () {
     
@@ -13,10 +12,14 @@ $('#decks').change (function () {
         success: function(data) {            
             $("#creatures").children().remove()
             $("#lands").children().remove()
+            $("#spells").children().remove();
             $("#totalCards").children().remove()
+            $("#deckEdit").children().remove()
             $("#lands").append("<strong>Lands:</strong>")
             $("#creatures").append("<strong>Creatures:</strong>")
             $("#spells").append("<strong>Spells:</strong>")
+            $("#deckEdit").append(`<a href=update-deck?id=${deckId} class="button">Edit Deck</a>`)
+            
             var cardSum = 0            
             for (element in data) {
                 console.log ("types are: " + data[element].types)

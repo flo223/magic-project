@@ -2,24 +2,24 @@ html
   include includes/header.pug
   |Insert your deck here:
   form(action="/submit-deck" method="post") Name: 
-  input(type="text" name="name") 
-  br
-  | Format: 
-  input(type="text" name="format")
-  br
-  | Guild:
-  input(type="text" name="guild")
-  br
-  | Wins:
-  input(type="text" name="wins")
-  br
-  | Looses:
-  input(type="text" name="looses")
-  br
-  input(type="submit" value="Add Deck")
-  br
+    input(type="text" name="name") 
+    br
+    | Format: 
+    input(type="text" name="format")
+    br
+    | Guild:
+    input(type="text" name="guild")
+    br
+    | Wins:
+    input(type="text" name="wins")
+    br
+    | Looses:
+    input(type="text" name="looses")
+    br
+    input(type="submit" value="Add Deck")
+    br
   if name
-  p Deck #{name} inserted correctly 
+    p Deck #{name} inserted correctly 
   script(src="javascript/jquery-3.3.1.js")
   script(src='javascript/script.js')
     

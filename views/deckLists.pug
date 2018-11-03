@@ -3,7 +3,8 @@ html
   |Choose a deck:
   select(id= "decks")
     each val in decks
-      option(value=val.ID) #{val.GUILD}    
+      option(value=val.ID) #{val.name}    
+  div(id="deckEdit")
   div(id="deckList")   
     ul(id="creatures")
     ul(id="spells")

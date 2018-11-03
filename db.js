@@ -44,6 +44,32 @@ var db = {
         })
     },
 
+    updateDeck: function (table, parameters, id) {
+        pool.getConnection(function(err, connection) {
+            if (err) throw err;                    
+            var setter = ""
+            var columns = Object.keys(parameters)
+            var values = Object.values(parameters)
+            var i
+            
+            for (i=0; i<columns.length; i++){                
+                var column = columns[i]                
+                var value = values[i]
+                setter += `${column}='${value}',`               
+            }         
+           
+            setter = setter.slice(0,-1)
+            var sqlQuery = `UPDATE ${table} set ${setter} where id=?`;
+            console.log(sqlQuery)
+            var params = id          
+            
+            connection.query(sqlQuery, params, function (err, result) {
+                if (err) throw err;                
+                connection.release();
+            });
+        })
+    },
+
     getCardId: function (cardName, callback) {
         pool.getConnection(function(err, connection) {            
             var sql = `SELECT ID FROM cards WHERE name = ? `;            
@@ -63,7 +89,7 @@ var db = {
 
     getDecks: function (callback) {
         pool.getConnection(function(err, connection) {            
-            var sql = "SELECT GUILD, ID FROM decks";            
+            var sql = "SELECT * FROM decks";            
             return connection.query(sql, (error, results, fields) => {
                 if (error) {
                     return console.error(error.message);

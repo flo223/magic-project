@@ -1,0 +1,30 @@
+html      
+  include includes/header.pug
+  h5 Update your deck:
+  br
+  form(action="/update-deck" method="post") Name: 
+    input(type="text" name="name" value=`${deck.name}`) 
+    br
+    | Format: 
+    input(type="text" name="format" value=`${deck.format}`)
+    br
+    | Guild:
+    input(type="text" name="guild" value=`${deck.Guild}`)
+    br
+    | Wins:
+    input(type="text" name="wins" value=`${deck.Wins}` )
+    br
+    | Looses:
+    input(type="text" name="looses" value=`${deck.Looses}`)
+    br
+    input(type="text" name="id" class="hide" value=`${deck.ID}`)
+    input(type="submit" value="Update Deck" class="button")
+  br  
+  script(src="javascript/jquery-3.3.1.js")
+  script(src='javascript/script.js')
+    
+    
+      
+      
+    
+    
