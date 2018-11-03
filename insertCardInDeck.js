@@ -1,8 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var db = require ('./db');
-var $ = require ('jquery')
-
+var setsJson = require ('./formatOrdered.json')
 
 var app = express();
 app.set('view engine', 'pug')
@@ -21,8 +20,7 @@ app.get('/decks', function(req, res) {
         db.getDeckList(6, function (deckList) {            
             res.render('deckLists', { deckList: deckList, decks:decks });            
         }) 
-    });
-     
+    });     
 });
 
 app.get('/update-deck', function(req, res) {       
@@ -68,8 +66,13 @@ app.get('/add-card', function(req, res) {
 
 app.get('/add-deck', function(req, res) {  
     var name = req.query.name
+    var extensionNames = []
+    for (element in setsJson){
+        extensionNames.push (setsJson[element].name)        
+    }
+    
     res.setHeader('Content-Type', 'text/html');        
-    res.render('addDeck', {name: name});    
+    res.render('addDeck', {name: name, extensionNames: extensionNames});    
 });
 
 app.post('/submit-deck', function(req, res) {  

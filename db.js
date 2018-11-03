@@ -31,11 +31,9 @@ var db = {
             }
            
             columns = columns.slice(0,-1)        
-            console.log(queryValues)
+            
             var sqlQuery = `INSERT INTO ${table} (${columns}) VALUES ?`;
-            console.log(sqlQuery)
             var params = []
-            //var paramsValues = [0, card, deckNumber, amount]
             params.push(queryValues)
             connection.query(sqlQuery, [params], function (err, result) {
                 if (err) throw err;                
@@ -60,7 +58,6 @@ var db = {
            
             setter = setter.slice(0,-1)
             var sqlQuery = `UPDATE ${table} set ${setter} where id=?`;
-            console.log(sqlQuery)
             var params = id          
             
             connection.query(sqlQuery, params, function (err, result) {
