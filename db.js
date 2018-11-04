@@ -6,14 +6,33 @@ var db = {
     insert: function (card, amount, deckNumber) {
         pool.getConnection(function(err, connection) {
             if (err) throw err;
-            var params = []
-            var sqlQuery = "INSERT INTO cards_decks (ID, CardID, DeckID, amount) VALUES ?";
-            var paramsValues = [0, card, deckNumber, amount]
-            params.push(paramsValues)
-            connection.query(sqlQuery, [params], function (err, result) {
-                if (err) throw err;                
-                connection.release();
+            
+            var checkExistsQuery = `SELECT * from cards_decks where CardID = '${card}' and DeckID = ?` 
+            connection.query(checkExistsQuery, deckNumber, function (err, results) {
+                if (err) throw err;
+                console.log (results)                
+                if (results.length > 0) {                   
+                    var updatedAmount = parseInt(results[0].amount) + parseInt(amount)
+                    var id = results[0].ID    
+                    var regroupQuery = `UPDATE cards_decks set amount = ${updatedAmount} where ID = ?` 
+                    connection.query(regroupQuery, id, function (err, results) {
+                        if (err) throw err;
+                        console.log ("Amount updated correctly")
+                        connection.release();
+                    })
+                } else {
+                    var params = []
+                    var sqlQuery = "INSERT INTO cards_decks (ID, CardID, DeckID, amount) VALUES ?";
+                    var paramsValues = [0, card, deckNumber, amount]
+                    params.push(paramsValues)
+                    connection.query(sqlQuery, [params], function (err, result) {
+                        if (err) throw err;
+                        console.log ("Card inserted correctly")               
+                        connection.release();
+                    });
+                }
             });
+            
         })
     },
 
