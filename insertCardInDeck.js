@@ -95,9 +95,13 @@ app.post ('/submit-card', function (req,res){
     
     var cardId = db.getCardId ( cardName , function (cardId) {        
         if (cardId) {
-            db.insert(cardId, amount, deckNumber)
             var cardExists="true"  
-            console.log (cardName +" inserted correctly")            
+            db.insert(cardId, amount, deckNumber, function (result){                
+                if (result === "updated") 
+                    console.log (cardName +" amount updated correctly")
+                else if (result ==="inserted")
+                    console.log (cardName +" inserted correctly")
+            })                     
         }            
         else {
             console.log (cardName +" does not exists")

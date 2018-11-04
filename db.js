@@ -3,22 +3,20 @@ var dbconnection = require ('./dbconnection.js')
 var pool = dbconnection.pool
 
 var db = {
-    insert: function (card, amount, deckNumber) {
+    insert: function (card, amount, deckNumber, callback) {
         pool.getConnection(function(err, connection) {
-            if (err) throw err;
-            
+            if (err) throw err;            
             var checkExistsQuery = `SELECT * from cards_decks where CardID = '${card}' and DeckID = ?` 
             connection.query(checkExistsQuery, deckNumber, function (err, results) {
-                if (err) throw err;
-                console.log (results)                
+                if (err) throw err;                               
                 if (results.length > 0) {                   
                     var updatedAmount = parseInt(results[0].amount) + parseInt(amount)
                     var id = results[0].ID    
                     var regroupQuery = `UPDATE cards_decks set amount = ${updatedAmount} where ID = ?` 
                     connection.query(regroupQuery, id, function (err, results) {
-                        if (err) throw err;
-                        console.log ("Amount updated correctly")
+                        if (err) throw err;                        
                         connection.release();
+                        return callback("updated")
                     })
                 } else {
                     var params = []
@@ -26,9 +24,9 @@ var db = {
                     var paramsValues = [0, card, deckNumber, amount]
                     params.push(paramsValues)
                     connection.query(sqlQuery, [params], function (err, result) {
-                        if (err) throw err;
-                        console.log ("Card inserted correctly")               
+                        if (err) throw err;                                    
                         connection.release();
+                        return callback("inserted")
                     });
                 }
             });
