@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var db = require ('./db');
-var setsJson = require ('./formatOrdered.json')
+var setsJson = require ('./data/formatOrdered.json')
 
 var app = express();
 app.set('view engine', 'pug')

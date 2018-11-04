@@ -1,5 +1,5 @@
 /node_modules/*
-AllCards*.json
+All*.json
 Magic.iml
 /public/javascript/jquery-3.3.1.js
 /dbconnection.js
