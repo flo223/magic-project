@@ -46,10 +46,15 @@ app.post('/update-deck', function(req, res) {
 });
 
 app.post('/getDecks', function(req, res) {
-    db.getDecks(function (decks) {        
+    db.getDecks(function (decks) {
+        var deckId = req.body.deckId       
         db.getDeckList(req.body.deckId, function (deckList) {          
             res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.write(JSON.stringify(deckList));            
+            var deck = {}
+            deck["deckList"] = deckList
+            console.log(deckId)
+            deck["deckInfo"] = decks[parseInt(deckId - 1)]            
+            res.write(JSON.stringify(deck));            
             res.end();  
         }) 
     });
