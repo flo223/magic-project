@@ -1,9 +1,13 @@
 html
   include includes/header.pug          
-  |Choose a deck:
-  select(id= "decks")
-    each val in decks
-      option(value=val.ID) #{val.name}    
+  |Choose a format:
+  select(id="formats")
+    each val in formats
+      option(value=val.name) #{val.name}
+  div(id="decksContainer" class="hide")
+    |Choose a deck:
+    select(id="decks")
+         
   div(id="deckEdit")
   div(id="deckInfo")
   div(id="deckList")   

@@ -101,6 +101,19 @@ var db = {
 
     },
 
+    getDeckByFormat: function (format, callback) {
+        pool.getConnection(function(err, connection) {           
+            var sql = "SELECT * FROM decks where format = ?"
+            return connection.query(sql, format, (error, results, fields) => {
+                if (error) {
+                    return console.error(error.message);
+                }              
+                connection.release();
+                return callback (results);
+            });
+        })
+    },
+
     getDecks: function (callback) {
         pool.getConnection(function(err, connection) {            
             var sql = "SELECT * FROM decks";            

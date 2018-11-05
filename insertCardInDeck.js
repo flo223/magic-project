@@ -18,7 +18,7 @@ app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 app.get('/decks', function(req, res) {       
     db.getDecks(function (decks) {
         db.getDeckList(6, function (deckList) {            
-            res.render('deckLists', { deckList: deckList, decks:decks });            
+            res.render('deckLists', { deckList: deckList, decks:decks, formats:setsJson });            
         }) 
     });     
 });
@@ -45,14 +45,22 @@ app.post('/update-deck', function(req, res) {
     res.redirect(`/update-deck?id=${id}`)     
 });
 
+app.post('/getDeckByFormat', function(req,res) {
+    var format = req.body.formatName    
+    db.getDeckByFormat(format, function (deckByFormat) {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.write(JSON.stringify(deckByFormat));            
+        res.end();
+    })
+})
+
 app.post('/getDecks', function(req, res) {
     db.getDecks(function (decks) {
         var deckId = req.body.deckId       
         db.getDeckList(req.body.deckId, function (deckList) {          
             res.writeHead(200, { 'Content-Type': 'application/json' });
             var deck = {}
-            deck["deckList"] = deckList
-            console.log(deckId)
+            deck["deckList"] = deckList            
             deck["deckInfo"] = decks[parseInt(deckId - 1)]            
             res.write(JSON.stringify(deck));            
             res.end();  

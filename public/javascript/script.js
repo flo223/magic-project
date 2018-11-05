@@ -1,3 +1,22 @@
+$('#formats').change (function () {
+    var formatName = $('#formats option:selected' ).val()
+    $.ajax({
+        type: "POST",
+        url: "/getDeckByFormat",        
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({ formatName: formatName }),
+        dataType: "JSON",
+        success: function(data) {
+            $('#decks').children().remove()
+            for (element in data) {
+                $('#decks').append(`<option value="${data[element].ID}">${data[element].name}</option>`)
+            }
+            
+            $('#decksContainer').removeClass('hide');            
+        }
+    })
+})
+
 
 $('#decks').change (function () {
     
