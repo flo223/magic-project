@@ -1,7 +1,7 @@
 html
-  include includes/header.pug          
-  |Choose a format:
+  include includes/header.pug
   select(id="formats")
+    option(value="") Choose a format:
     each val in formats
       option(value=val.name) #{val.name}
   div(id="decksContainer" class="hide")

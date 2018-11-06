@@ -7,7 +7,9 @@ $('#formats').change (function () {
         data: JSON.stringify({ formatName: formatName }),
         dataType: "JSON",
         success: function(data) {
+            $('#formats option[value=""]').remove()
             $('#decks').children().remove()
+            $('#decks').append(`<option value="">Select a deck</option>`)
             for (element in data) {
                 $('#decks').append(`<option value="${data[element].ID}">${data[element].name}</option>`)
             }
@@ -30,7 +32,8 @@ $('#decks').change (function () {
         dataType: "JSON",
         success: function(data) {
             var deckList = data.deckList
-            var deckInfo = data.deckInfo            
+            var deckInfo = data.deckInfo 
+            $('#decks option[value=""]').remove()           
             $("#creatures").children().remove()
             $("#lands").children().remove()
             $("#spells").children().remove();
