@@ -27,6 +27,11 @@ app.get('/update-deck', function(req, res) {
         id = parseInt(req.query.id) - 1
     }
     db.getDecks(function (decks) { 
+        //We don't want to show null in the fields of the update form. Display empty field instead.
+        for (element in decks[id]) {
+            if (decks[id][element] === null)
+                decks[id][element] = ""
+        }
         res.render('updateDeck', {deck:decks[id], success:req.query.success})
     });
 });
