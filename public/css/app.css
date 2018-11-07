@@ -1,0 +1,12 @@
+.fadeBanner {
+    animation:fade 4s;
+    -webkit-animation:fade 4s;
+    background-color:#489B48;
+    color:white;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fade {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+}

@@ -16,10 +16,8 @@ app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 
 
 app.get('/decks', function(req, res) {       
-    db.getDecks(function (decks) {
-        db.getDeckList(6, function (deckList) {            
-            res.render('deckLists', { deckList: deckList, decks:decks, formats:setsJson });            
-        }) 
+    db.getDecks(function (decks) {                 
+        res.render('deckLists', { decks:decks, formats:setsJson });         
     });     
 });
 
@@ -29,7 +27,7 @@ app.get('/update-deck', function(req, res) {
         id = parseInt(req.query.id) - 1
     }
     db.getDecks(function (decks) { 
-        res.render('updateDeck', {deck:decks[id]})
+        res.render('updateDeck', {deck:decks[id], success:req.query.success})
     });
 });
 
@@ -41,8 +39,10 @@ app.post('/update-deck', function(req, res) {
     var format = req.body.format;
     var table = "decks"
     var id = parseInt(req.body.id);
-    db.updateDeck(table, {"name":name, "guild":guild, "format":format, "looses":looses, "wins":wins }, id)
-    res.redirect(`/update-deck?id=${id}`)     
+    db.updateDeck(table, {"name":name, "guild":guild, "format":format, "looses":looses, "wins":wins }, id, function(result){
+        res.redirect(`/update-deck?id=${id}&success=${result}`) 
+    })
+        
 });
 
 app.post('/getDeckByFormat', function(req,res) {

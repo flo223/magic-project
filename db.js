@@ -59,7 +59,7 @@ var db = {
         })
     },
 
-    updateDeck: function (table, parameters, id) {
+    updateDeck: function (table, parameters, id, callback) {
         pool.getConnection(function(err, connection) {
             if (err) throw err;                    
             var setter = ""
@@ -78,8 +78,11 @@ var db = {
             var params = id          
             
             connection.query(sqlQuery, params, function (err, result) {
-                if (err) throw err;                
+                if (err)
+                    return callback(false)              
                 connection.release();
+                console.log(`deck ${parameters.name} updated successfully`)
+                return callback(true);
             });
         })
     },
