@@ -132,4 +132,25 @@ app.post ('/submit-card', function (req,res){
         
 })
 
+app.get('/add-book', function(req, res) {   
+    var title = req.query.title
+    res.setHeader('Content-Type', 'text/html');
+    var genders = ["Policier", "Drame"]               
+    res.render('addBook', {genders:genders, title:title});    
+});
+
+app.post('/submit-book', function(req, res) {   
+    res.setHeader('Content-Type', 'text/html');    
+    var title = req.body.title;
+    var author = req.body.author;    
+    var year = req.body.year;
+    if (!year)
+        year = null
+    var description = req.body.description;
+    var category = req.body.category;
+    var table = "books"
+    db.insertDeck(table, {"Title":title, "Author":author, "Description":description, "Category":category, "Published_Year":year })        
+    res.redirect(`/add-book?title=${title}`)       
+});
+
 app.listen(8080);

@@ -1,6 +1,6 @@
 .fadeBanner {
     animation:fade 4s;
-    -webkit-animation:fade 4s;
+    -webkit-animation:fade 5s;
     background-color:#489B48;
     color:white;
     animation-fill-mode: forwards;

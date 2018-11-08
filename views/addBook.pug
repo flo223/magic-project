@@ -1,0 +1,32 @@
+html      
+  include includes/header.pug
+  if title
+    div(class="fadeBanner") Votre livre #{title} a bien été ajouté 
+  |Ajoute un nouveau livre:
+  form(action="/submit-book" method="post") Titre:    
+    input(type="text" name="title") 
+    br
+    | Auteur: 
+    input(type="text" name="author")
+    br
+    | Année de Publication:
+    input(type="text" name="year")
+    br
+    | Genre:
+    select(name= "category")
+      each val in genders
+        option #{val}
+    br
+    | Description:
+    input(type="text" name="description")    
+    br
+    input(type="submit" value="Ajouter le livre")
+    br  
+  script(src="javascript/jquery-3.3.1.js")
+  script(src='javascript/script.js')
+    
+    
+      
+      
+    
+    
