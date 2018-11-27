@@ -1,3 +1,38 @@
+$("#buttonAddCard").click(function() {  
+    var deckId = $('#decks option:selected' ).val()
+    
+    if (!$('#addCardForm').is(':visible')) {
+        $("#addCardForm").append(`<input type="text" id ="deckId" name="deckId" class="hide" value= ${deckId}>`);
+    } else {
+        $("#deckId").remove()
+    }
+    $("#addCardForm").toggle("slow");
+    
+    
+    return false;
+    
+  });
+
+
+$('#editPageAddCardForm').submit (function (e) {
+    e.preventDefault();
+    var form = $(this)
+    var url = form.attr('action')
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: form.serialize(),                
+        success: function(cardExists) {
+        $('#confirmationMessage').children().remove()
+            if (cardExists){
+                $('#confirmationMessage').append('<span>Card inserted correctly</span>')
+            } else {                
+                $('#confirmationMessage').append('<span>Card does not exists</span>')
+            }
+        }
+
+    })
+})
 $('#formats').change (function () {
     var formatName = $('#formats option:selected' ).val()
     $.ajax({
@@ -23,6 +58,10 @@ $('#formats').change (function () {
 $('#decks').change (function () {
     
     var deckId = $('#decks option:selected' ).val()
+    if(!$('#deckId').is(':visible')){
+        $("#addCardForm").hide();
+        $("#deckId").remove()
+    }
     
     $.ajax({
         type: "POST",
@@ -33,6 +72,7 @@ $('#decks').change (function () {
         success: function(data) {
             var deckList = data.deckList
             var deckInfo = data.deckInfo 
+           
             $('#decks option[value=""]').remove()           
             $("#creatures").children().remove()
             $("#lands").children().remove()
@@ -49,8 +89,7 @@ $('#decks').change (function () {
             $("#deckInfo").append(`<span>Wins: ${deckInfo.Wins} </span>`)
             $("#deckInfo").append(`<span>Looses: ${deckInfo.Looses} </span>`)
             var cardSum = 0            
-            for (element in deckList) {
-                console.log ("types are: " + deckList[element].types)
+            for (element in deckList) {                
                 if (deckList[element].types.includes("Land")) {                    
                     $("#lands").append(`<li>${deckList[element].amount} ${deckList[element].name}</li>`);
                 }

@@ -109,7 +109,7 @@ app.post('/submit-deck', function(req, res) {
 app.post ('/submit-card', function (req,res){    
     var cardName = req.body.card
     var amount = req.body.amount
-    var deckNumber = req.body.deckNumber
+    var deckNumber = req.body.deckId
     
     var cardId = db.getCardId ( cardName , function (cardId) {        
         if (cardId) {
@@ -125,7 +125,11 @@ app.post ('/submit-card', function (req,res){
             console.log (cardName +" does not exists")
             var cardExists="false"
         }
-        res.redirect(`/add-card?card=${cardName}&amount=${amount}&deckNumber=${deckNumber}&cardExists=${cardExists}`)
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        
+        res.write(cardExists);            
+        res.end();
+        //res.redirect(`/add-card?card=${cardName}&amount=${amount}&deckNumber=${deckNumber}&cardExists=${cardExists}`)
         
     })
         
@@ -152,5 +156,9 @@ app.post('/submit-book', function(req, res) {
     db.insertDeck(table, {"Title":title, "Author":author, "Description":description, "Category":category, "Published_Year":year })        
     res.redirect(`/add-book?title=${title}`)       
 });
+
+app.get('/test', function (req, res) {
+    res.render('test')
+})
 
 app.listen(8080);
