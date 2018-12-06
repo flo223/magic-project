@@ -8,3 +8,5 @@ dumpMagic*
 public/css/foundation*
 public/index.html
 public/js/*
+public/bootstrap/*
+public/x-editable/*

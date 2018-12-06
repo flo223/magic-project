@@ -90,13 +90,14 @@ $('#decks').change (function () {
             $("#deckInfo").append(`<span>Looses: ${deckInfo.Looses} </span>`)
             var cardSum = 0            
             for (element in deckList) {                
-                if (deckList[element].types.includes("Land")) {                    
-                    $("#lands").append(`<li>${deckList[element].amount} ${deckList[element].name}</li>`);
+                if (deckList[element].types.includes("Land")) {                  
+                    $("#lands").append(`<li><a href="#" id="amount${element}" data-type="text" data-pk="${deckList[element].id}" data-url="/updateCard" data-title="Enter amount"> ${deckList[element].amount}</a>  ${deckList[element].name}</li>`);                    
                 }
                 else if (deckList[element].types.includes("Creature"))             
-                    $("#creatures").append(`<li>${deckList[element].amount} ${deckList[element].name}</li>`);
+                    $("#creatures").append(`<li><a href="#" id="amount${element}" data-type="text" data-pk="${deckList[element].id}" data-url="/updateCard" data-title="Enter amount"> ${deckList[element].amount}</a> ${deckList[element].name}</li>`);
                 else             
-                    $("#spells").append(`<li>${deckList[element].amount} ${deckList[element].name}</li>`);
+                    $("#spells").append(`<li><a href="#" id="amount${element}" data-type="text" data-pk="${deckList[element].id}" data-url="/updateCard" data-title="Enter amount"> ${deckList[element].amount} </a> ${deckList[element].name}</li>`);
+                $(`#amount${element}`).editable();
                 cardSum += parseInt(deckList[element].amount)             
             }
             $("#totalCards").append(`<strong><span>Total ${cardSum} cards </span></strong>`)

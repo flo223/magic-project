@@ -1,24 +1,26 @@
 html      
   include includes/header.pug
-  |Insert your deck here:
-  form(action="/submit-deck" method="post") Name:    
-    input(type="text" name="name") 
-    br
-    | Format: 
-    select(name= "format")
-      each val in extensionNames
-        option #{val}
-    br
-    | Guild:
-    input(type="text" name="guild")
-    br
-    | Wins:
-    input(type="text" name="wins")
-    br
-    | Looses:
-    input(type="text" name="looses")
-    br
-    input(type="submit" value="Add Deck")
+  h4 Insert your deck here:
+  br
+  form(action="/submit-deck" method="post") 
+    div(class="form-group")
+      label Name:    
+      input(type="text" name="name" class="form-control")
+    div(class="form-group")
+      label Format: 
+      select(name="format" class="form-control")
+        each val in extensionNames
+          option #{val}
+    div(class="form-group")
+      label Guild:
+      input(type="text" name="guild" class="form-control")
+    div(class="form-group")
+      label Wins:    
+      input(type="text" name="wins" class="form-control")
+    div(class="form-group")
+      label Looses:
+      input(type="text" name="looses" class="form-control") 
+    input(type="submit" value="Add Deck" class="btn btn-primary")
     br
   if name
     p Deck #{name} inserted correctly 

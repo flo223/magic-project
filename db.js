@@ -59,6 +59,18 @@ var db = {
         })
     },
 
+    updateCard: function (amount, id, callback){
+        pool.getConnection(function(err, connection) {
+            var query = `UPDATE cards_decks set amount = ${amount} where ID = ?` 
+            connection.query(query, id, function (err, results) {
+                if (err) throw err;                        
+                connection.release();
+                return callback(console.log(`card ${id} updated correctly`))
+            })
+        })
+    }
+    ,
+
     updateDeck: function (table, parameters, id, callback) {
         pool.getConnection(function(err, connection) {
             if (err) throw err;                    
@@ -131,7 +143,7 @@ var db = {
     },
 
     getDeckList: function (deckId, callback) {
-        var sql = "select cd.amount, c.Name, c.Type, c.Second_Type, c.Third_Type from cards_decks cd left join cards c on cd.CardID=c.ID where deckID = ?;";            
+        var sql = "select cd.amount, cd.ID, c.Name, c.Type, c.Second_Type, c.Third_Type from cards_decks cd left join cards c on cd.CardID=c.ID where deckID = ?;";            
         try {            
             pool.query(sql,deckId, function(error, results, fields) {                
                 if (error) {
@@ -142,6 +154,7 @@ var db = {
                 for (i = 0; i<results.length; i++ ) {
                     cardObject = {}
                     cardObject.name = results[i].Name
+                    cardObject.id = results[i].ID
                     cardObject.amount = results[i].amount
                     cardObject.types = []
                     cardObject.types.push(results[i].Type)

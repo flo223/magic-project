@@ -161,4 +161,10 @@ app.get('/test', function (req, res) {
     res.render('test')
 })
 
+app.post('/updateCard', function (req, res) {
+    db.updateCard(req.body.value, req.body.pk, function (){        
+        res.sendStatus(200)
+    })    
+})
+
 app.listen(8080);

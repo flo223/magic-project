@@ -1,24 +1,16 @@
-head
-  link(rel="stylesheet" href="css/foundation.css")
+head  
   link(rel="stylesheet" href="css/app.css")
-  script(src="js/vendor/foundation.js")
+  link(rel="stylesheet" href="bootstrap/css/bootstrap.min.css")
+  link(rel="stylesheet" href="x-editable/bootstrap3-editable/css/bootstrap-editable.css")
 body  
-  div(class="top-bar" id="example-menu")
-    div(class="top-bar-left")
-      ul(class="dropdown vertical medium-horizontal menu")
-        li
-          a(href="/add-deck") Add a deck       
-        li 
-          a(href="/add-card") Add a card     
-        li 
-          a(href="/decks") Deck lists
-        li 
-          a(href="/add-book") Ajouter un livre       
-    div(class="top-bar-right")
-      ul(class="menu")
-        li
-          input(type="search" placeholder="Search")
-        li
-          button(type="button" class="button") Search
+  nav(class="navbar navbar-default")
+    div(id="example-menu")      
+        ul(class="nav navbar-nav")
+          li(class="nav-item")
+            a(href="/add-deck" class="nav-link") Add a deck   
+          li(class="nav-item")
+            a(href="/decks" class="nav-link") Deck lists
+          li(class="nav-item") 
+            a(href="/add-book" class="nav-link") Ajouter un livre    
+          
     
-  
