@@ -15,6 +15,14 @@ app.use(bodyParser.json())
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 
 
+app.get('/add-book', function(req, res) {   
+    var title = req.query.title
+    var username = req.query.username
+    res.setHeader('Content-Type', 'text/html');
+    var genders = ["Policier", "Drame"]               
+    res.render('addBook', {genders:genders, title:title, username:username});    
+});
+
 app.get('/decks', function(req, res) {       
     db.getDecks(function (decks) {                 
         res.render('deckLists', { decks:decks, formats:setsJson });         
@@ -34,20 +42,6 @@ app.get('/update-deck', function(req, res) {
         }
         res.render('updateDeck', {deck:decks[id], success:req.query.success})
     });
-});
-
-app.post('/update-deck', function(req, res) {       
-    var name = req.body.name;
-    var looses = parseInt(req.body.looses);
-    var guild = req.body.guild;
-    var wins = parseInt(req.body.wins);
-    var format = req.body.format;
-    var table = "decks"
-    var id = parseInt(req.body.id);
-    db.updateDeck(table, {"name":name, "guild":guild, "format":format, "looses":looses, "wins":wins }, id, function(result){
-        res.redirect(`/update-deck?id=${id}&success=${result}`) 
-    })
-        
 });
 
 app.post('/getDeckByFormat', function(req,res) {
@@ -128,20 +122,11 @@ app.post ('/submit-card', function (req,res){
         res.writeHead(200, { 'Content-Type': 'application/json' });
         
         res.write(cardExists);            
-        res.end();
-        //res.redirect(`/add-card?card=${cardName}&amount=${amount}&deckNumber=${deckNumber}&cardExists=${cardExists}`)
-        
+        res.end();        
     })
         
         
 })
-
-app.get('/add-book', function(req, res) {   
-    var title = req.query.title
-    res.setHeader('Content-Type', 'text/html');
-    var genders = ["Policier", "Drame"]               
-    res.render('addBook', {genders:genders, title:title});    
-});
 
 app.post('/submit-book', function(req, res) {   
     res.setHeader('Content-Type', 'text/html');    
@@ -157,8 +142,16 @@ app.post('/submit-book', function(req, res) {
     res.redirect(`/add-book?title=${title}`)       
 });
 
-app.get('/test', function (req, res) {
-    res.render('test')
+app.get('/inscription', function (req, res) {    
+    res.render('inscription')
+})
+
+app.post('/inscription', function (req, res) {    
+    db.addUser(req.body.name, req.body.surname, req.body.email, req.body.username, req.body.password, req.body.birthdate, function() {
+        console.log ("User inserted correctly to database")
+        res.redirect(`/add-book?username=${req.body.username}`)
+    })
+
 })
 
 app.post('/updateCard', function (req, res) {
@@ -166,5 +159,22 @@ app.post('/updateCard', function (req, res) {
         res.sendStatus(200)
     })    
 })
+
+app.post('/update-deck', function(req, res) {       
+    var name = req.body.name;
+    var looses = parseInt(req.body.looses);
+    var guild = req.body.guild;
+    var wins = parseInt(req.body.wins);
+    var format = req.body.format;
+    var table = "decks"
+    var id = parseInt(req.body.id);
+    db.updateDeck(table, {"name":name, "guild":guild, "format":format, "looses":looses, "wins":wins }, id, function(result){
+        res.redirect(`/update-deck?id=${id}&success=${result}`) 
+    })        
+});
+
+app.get('/login', function (req, res) {
+    res.render('login')
+});
 
 app.listen(8080);

@@ -1,7 +1,9 @@
 html      
   include includes/header.pug
   if title
-    div(class="fadeBanner") Votre livre #{title} a bien été ajouté 
+    div(class="fadeBanner") Votre livre #{title} a bien été ajouté
+  if username
+    h4 Bienvenu(e) #{username}, tu peux maintenant ajouter ton premier livre.
   |Ajoute un nouveau livre:
   form(action="/submit-book" method="post") Titre:    
     input(type="text" name="title") 

@@ -170,8 +170,31 @@ var db = {
             console.log(e + "error with db query")
             connection.release();
         }         
-    }   
+    },
+ 
+
+    addUser: function (name, surname, email, username, password, birthdate, callback) {
+        try {
+            pool.getConnection(function(err, connection) {
+                var sqlQuery = "INSERT INTO users (ID, Name, Surname, Email, Username, Password, Birthdate, Created_date) VALUES ?";
+     
+                var params = []
+                var createdDate = new Date()
+                var paramsValues = [0, name, surname, email, username, password, birthdate, createdDate]
+                params.push(paramsValues)
+                pool.query(sqlQuery, [params], function (err, result) {
+                    if (err) throw err;
+                    connection.release();                                
+                    return callback ();
+                });
+            })      
+        } catch (e) {
+            console.log(e + "error with db query")
+            connection.release();
+        }    
+    }
 }
+
 
 module.exports = db;
 
