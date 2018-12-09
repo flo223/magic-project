@@ -192,6 +192,24 @@ var db = {
             console.log(e + "error with db query")
             connection.release();
         }    
+    },
+
+    login: function (username, password, callback) {
+        sqlQuery = "select * from users where username = ?"        
+        pool.getConnection(function(err, connection) {
+            pool.query(sqlQuery, username, function (err, result) {
+                if (err) throw err;
+                    connection.release();                           
+                if (result.length > 0) {    
+                    if (password === result[0].Password) {
+                        
+                        return callback (true);
+                    }
+                }                   
+                return callback (false);
+            })
+        })
+
     }
 }
 

@@ -15,5 +15,10 @@ body
       ul(class="nav navbar-nav navbar-right")
         li(class="nav-item")
           a(href="/inscription" class="nav-link") S'inscrire
-        li(class="nav-item")
-          a(href="/login" class="nav-link") S'identifier
+        if (!session.username)
+          li(class="nav-item")
+            a(href="/login" class="nav-link") S'identifier
+        else
+          li(class="nav-item")
+            a(href="/logout" class="nav-link") Déconnexion
+

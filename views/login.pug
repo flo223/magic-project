@@ -1,27 +1,17 @@
 html      
-  include includes/header.pug   
-  h4 Choisi un nom d'utilisateur et inscris-toi:
+  include includes/header.pug
+  if confirm
+    div(class="fadeBannerError") Utilisateur ou mot de passe incorrect
+  h4 Entre sur ton compte depuis cette page:
   br
-  form(action="/inscription" method="post") 
+  form(action="/login" method="post") 
     div(class="form-group")
-      label Prénom:    
-      input(type="text" name="name" class="form-control")    
-    div(class="form-group")
-      label Nom:
-      input(type="text" name="surname" class="form-control")
-    div(class="form-group")
-      label Email:    
-      input(type="text" name="email" class="form-control")
-    div(class="form-group")
-      label Nom d'utilisateur:
-      input(type="text" name="username" class="form-control")
+      label Nom d'utilisateur:    
+      input(type="text" name="username" class="form-control")        
     div(class="form-group")
       label Mot de passe:
-      input(type="password" name="password" class="form-control")
-    div(class="form-group")
-      label Date de Naissance:
-      input(type="date" name="birthdate" class="form-control")    
-    input(type="submit" value="S'inscrire" class="btn btn-primary")
+      input(type="password" name="password" class="form-control")       
+    input(type="submit" value="S'identifier" class="btn btn-primary")
     br   
   script(src="javascript/jquery-3.3.1.js")
   script(src='javascript/script.js')

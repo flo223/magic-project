@@ -1,10 +1,22 @@
-var express = require('express');
-var bodyParser = require('body-parser');
+var express = require('express')
+var bodyParser = require('body-parser')
+var session = require('express-session')
 var db = require ('./db');
 var setsJson = require ('./data/formatOrdered.json')
 
+
 var app = express();
 app.set('view engine', 'pug')
+app.use(session({
+    secret: 'Fdskj5654$JKJ4ccnmnf=9090909hekj4',
+    resave: false,
+    saveUninitialized: true
+}))
+
+app.use(function(req,res,next){
+    res.locals.session = req.session;
+    next();
+});
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -174,7 +186,28 @@ app.post('/update-deck', function(req, res) {
 });
 
 app.get('/login', function (req, res) {
-    res.render('login')
+    res.render('login', {confirm:req.query.confirm})
+});
+
+app.post('/login', function (req, res) {
+    db.login(req.body.username, req.body.password, function(loginOk){
+        if (loginOk) {
+            req.session.username=req.body.username            
+            res.redirect(`myaccount`)
+        } else {
+            res.redirect('/login?confirm=ko')  
+        }
+    })        
+});
+
+app.get('/logout', function (req, res) {
+    var sourcePage = req.headers.referer.split('/').pop()
+    req.session.username = null
+    res.redirect(`/${sourcePage}`)      
+});
+
+app.get('/myaccount', function (req, res) {    
+    res.render('myaccount', {user:req.session.username})
 });
 
 app.listen(8080);

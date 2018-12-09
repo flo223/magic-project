@@ -6,6 +6,14 @@
     animation-fill-mode: forwards;
 }
 
+.fadeBannerError {
+    animation:fade 6s;
+    -webkit-animation:fade 7s;
+    background-color:#9B4849;
+    color:white;
+    animation-fill-mode: forwards;
+}
+
 @keyframes fade {
     from { opacity: 1; }
     to   { opacity: 0; }
