@@ -1,0 +1,26 @@
+html      
+  include includes/header.pug  
+  each val in books
+    div(id="books")
+      span= `${val.Title} `
+        br
+        if val.read
+          a(bookId=val.ID name="readIt" class="glyphicon glyphicon-ok" style="color: rgb(0, 0, 0)" href="#")  
+          i
+            span  Je l'ai déjà lu
+        else
+          a(bookId=val.ID name="readIt" class="glyphicon glyphicon-book" style="color: rgb(0, 0, 0)" href="#")  
+          i
+            span  Marquer comme lu
+        br
+        br
+      
+  
+  script(src="javascript/jquery-3.3.1.js")
+  script(src='javascript/script.js')
+    
+    
+      
+      
+    
+    

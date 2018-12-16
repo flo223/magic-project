@@ -210,6 +210,56 @@ var db = {
             })
         })
 
+    },
+
+    getBooks: function (callback) {
+        pool.getConnection(function(err, connection) {           
+            var sql = "SELECT * FROM books;"
+            return connection.query(sql, (error, results, fields) => {
+                if (error) {
+                    return console.error(error.message);
+                }              
+                connection.release();
+                return callback (results);
+            });
+        })
+    },
+
+    setBookAsRead: function (bookId, userName, callback) {
+        pool.getConnection(function(err, connection) {    
+            var getUserIdQuery = "Select * from users where Username = ?"
+            connection.query(getUserIdQuery, userName, function (err, results) {
+                
+                var userId = results[0].ID                
+                var params = []
+                var readDate = new Date()              
+                var sqlQuery = "INSERT INTO readings (ID, user_id, book_id, read_date) VALUES ?";
+                var paramsValues = [0, userId, bookId, readDate]
+                params.push(paramsValues)
+                connection.query(sqlQuery, [params], function (err, result) {
+                    if (err) throw err;                                    
+                    connection.release();
+                    return callback("bookread inserted")
+                });
+            })
+        });
+    },
+    
+    getReadsForUser: function (user, callback) {
+        pool.getConnection(function(err, connection) {         
+            var getUserIdQuery = "Select * from users where Username = ?"            
+            connection.query(getUserIdQuery, user, function (err, results) {
+                var userId = results[0].ID 
+                sqlQuery = `select * from readings where user_id = ?`
+                connection.query(sqlQuery, userId, function (err, results) {
+                    var booksRead = []
+                    for (i=0; i<results.length; i++) {
+                        booksRead.push(results[i].book_id)                        
+                    }                    
+                    return callback(booksRead)
+                })
+            })
+        })
     }
 }
 

@@ -108,3 +108,17 @@ $('#decks').change (function () {
         }
     });      
 })
+
+$('a[name=readIt]').click(function() {
+    var bookId = $(this).attr("bookId")
+    $.ajax({
+        type: "POST",
+        url: '/bookread',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({ bookId: bookId }),  
+        dataType: "JSON",              
+        success: () =>  {
+            $(this).removeClass('glyphicon-book').addClass('glyphicon-ok');
+        }
+    })
+})

@@ -2,6 +2,10 @@ head
   link(rel="stylesheet" href="css/app.css")
   link(rel="stylesheet" href="bootstrap/css/bootstrap.min.css")
   link(rel="stylesheet" href="x-editable/bootstrap3-editable/css/bootstrap-editable.css")
+  script(src="javascript/jquery-3.3.1.js")
+  script(src="bootstrap/js/bootstrap.min.js")
+  
+
 body  
   nav(class="navbar navbar-default")
     div(id="example-menu" class="navbar-collapse collapse")      
@@ -12,13 +16,19 @@ body
           a(href="/decks" class="nav-link") Deck lists
         li(class="nav-item") 
           a(href="/add-book" class="nav-link") Ajouter un livre 
-      ul(class="nav navbar-nav navbar-right")
-        li(class="nav-item")
-          a(href="/inscription" class="nav-link") S'inscrire
+      ul(class="nav navbar-nav navbar-right")        
         if (!session.username)
+          li(class="nav-item")
+            a(href="/inscription" class="nav-link") S'inscrire
           li(class="nav-item")
             a(href="/login" class="nav-link") S'identifier
         else
-          li(class="nav-item")
-            a(href="/logout" class="nav-link") Déconnexion
-
+          li(class="dropdown" class="nav-item")
+            a(data-toggle="dropdown" href="#")
+              span(class="glyphicon glyphicon-user")  #{session.username}
+              span(class="caret")
+            ul(class="dropdown-menu" role="menu")
+              li
+                a(class="dropdown-item" href="/logout") Déconnexion
+              li
+                a(class="dropdown-item" href="/mybooks") Mes livres

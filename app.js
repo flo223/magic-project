@@ -163,7 +163,6 @@ app.post('/inscription', function (req, res) {
         console.log ("User inserted correctly to database")
         res.redirect(`/add-book?username=${req.body.username}`)
     })
-
 })
 
 app.post('/updateCard', function (req, res) {
@@ -210,4 +209,32 @@ app.get('/myaccount', function (req, res) {
     res.render('myaccount', {user:req.session.username})
 });
 
+app.get('/mybooks', function (req, res) {    
+    if (req.session.username){
+        db.getBooks(function(books){        
+            db.getReadsForUser(req.session.username, function(reads){            
+                for (book in books) {                
+                    if (reads.includes(books[book].ID)){
+                        books[book].read = true;
+                    } else {
+                        books[book].read = false;
+                    }
+                }            
+                res.render('mybooks', {books:books})
+            })
+        })  
+    } else {
+        res.redirect('login')
+    }   
+});
+
+app.post('/bookread', function(req,res) {
+    db.setBookAsRead(req.body.bookId, req.session.username, function(result) {
+        console.log("bookRead inserted + result")
+        res.writeHead(200, { 'Content-Type': 'application/json' });                   
+        res.write('200')
+        res.end(); 
+    })
+       
+})
 app.listen(8080);
