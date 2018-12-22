@@ -3,6 +3,7 @@ var bodyParser = require('body-parser')
 var session = require('express-session')
 var db = require ('./db');
 var setsJson = require ('./data/formatOrdered.json')
+var guildsJson = require ('./data/guilds.json')
 
 
 var app = express();
@@ -94,9 +95,11 @@ app.get('/add-deck', function(req, res) {
     for (element in setsJson){
         extensionNames.push (setsJson[element].name)        
     }
-    
+
+    var guilds = guildsJson.guilds
+       
     res.setHeader('Content-Type', 'text/html');        
-    res.render('addDeck', {name: name, extensionNames: extensionNames});    
+    res.render('addDeck', {name: name, extensionNames: extensionNames, guilds:guilds});    
 });
 
 app.post('/submit-deck', function(req, res) {  

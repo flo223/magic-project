@@ -13,7 +13,9 @@ html
           option #{val}
     div(class="form-group")
       label Guild:
-      input(type="text" name="guild" class="form-control")
+      select(name="guild" class="form-control")
+        each val in guilds
+          option #{val}      
     div(class="form-group")
       label Wins:    
       input(type="text" name="wins" class="form-control")

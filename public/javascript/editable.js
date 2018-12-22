@@ -1,6 +1,5 @@
 $.fn.editable.defaults.mode = 'inline';
-$(document).ready(function() {
-    console.log ("gaga")
+$(document).ready(function() {    
     $('#amount').editable();
 });
 
