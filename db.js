@@ -1,4 +1,8 @@
 var dbconnection = require ('./dbconnection.js')
+var log4js = require('log4js')
+var db = require ('./db')
+log4js.configure('data/log4jConfig.json')
+const logger = log4js.getLogger('console')
 
 var pool = dbconnection.pool
 
@@ -65,7 +69,7 @@ var db = {
             connection.query(query, id, function (err, results) {
                 if (err) throw err;                        
                 connection.release();
-                return callback(console.log(`card ${id} updated correctly`))
+                return callback(logger.info(`card ${id} updated correctly`))
             })
         })
     }
@@ -82,18 +86,22 @@ var db = {
             for (i=0; i<columns.length; i++){                
                 var column = columns[i]                
                 var value = values[i]
-                setter += `${column}='${value}',`               
+                setter += `${column}="${value}",`               
             }         
            
             setter = setter.slice(0,-1)
             var sqlQuery = `UPDATE ${table} set ${setter} where id=?`;
-            var params = id          
+            var params = id
+            console.log(sqlQuery + params)          
             
             connection.query(sqlQuery, params, function (err, result) {
-                if (err)
-                    return callback(false)              
-                connection.release();
-                console.log(`deck ${parameters.name} updated successfully`)
+                if (err) {
+                    logger.error(err)
+                    connection.release()
+                    return callback(false)
+                }                                  
+                connection.release()
+                logger.info(`deck ${parameters.name} updated successfully`)
                 return callback(true);
             });
         })
@@ -104,7 +112,7 @@ var db = {
             var sql = `SELECT ID FROM cards WHERE name = ? `;            
             return connection.query(sql, cardName, (error, results, fields) => {
               if (error) {
-                return console.error(error.message);
+                return logger.error(error.message);
               }
               connection.release();              
               if (results[0])
@@ -121,7 +129,7 @@ var db = {
             var sql = "SELECT * FROM decks where format = ?"
             return connection.query(sql, format, (error, results, fields) => {
                 if (error) {
-                    return console.error(error.message);
+                    return logger.error(error.message);
                 }              
                 connection.release();
                 return callback (results);
@@ -134,7 +142,7 @@ var db = {
             var sql = "SELECT * FROM decks";            
             return connection.query(sql, (error, results, fields) => {
                 if (error) {
-                    return console.error(error.message);
+                    return logger.error(error.message);
                 }              
                 connection.release();
                 return callback (results);
@@ -147,7 +155,7 @@ var db = {
         try {            
             pool.query(sql,deckId, function(error, results, fields) {                
                 if (error) {
-                    return console.error(error.message);
+                    return logger.error(error.message);
                 }
                 
                 var deckList = []
@@ -167,7 +175,7 @@ var db = {
             });
       
         } catch (e) {
-            console.log(e + "error with db query")
+            logger.error(e + "error with db query")
             connection.release();
         }         
     },
@@ -189,7 +197,7 @@ var db = {
                 });
             })      
         } catch (e) {
-            console.log(e + "error with db query")
+            logger.error(e + "error with db query")
             connection.release();
         }    
     },
@@ -217,7 +225,7 @@ var db = {
             var sql = "SELECT * FROM books;"
             return connection.query(sql, (error, results, fields) => {
                 if (error) {
-                    return console.error(error.message);
+                    return logger.error(error.message);
                 }              
                 connection.release();
                 return callback (results);

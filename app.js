@@ -1,12 +1,13 @@
 var express = require('express')
 var bodyParser = require('body-parser')
 var session = require('express-session')
-var db = require ('./db');
+var log4js = require('log4js')
+var db = require ('./db')
+log4js.configure('data/log4jConfig.json')
+const logger = log4js.getLogger('console')
 var setsJson = require ('./data/formatOrdered.json')
 var guildsJson = require ('./data/guilds.json')
-
-
-var app = express();
+var app = express()
 app.set('view engine', 'pug')
 app.use(session({
     secret: 'Fdskj5654$JKJ4ccnmnf=9090909hekj4',
@@ -26,7 +27,6 @@ app.use(express.static(__dirname+'/public'));
 // parse application/json
 app.use(bodyParser.json())
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
-
 
 app.get('/add-book', function(req, res) {   
     var title = req.query.title
@@ -125,13 +125,13 @@ app.post ('/submit-card', function (req,res){
             var cardExists="true"  
             db.insert(cardId, amount, deckNumber, function (result){                
                 if (result === "updated") 
-                    console.log (cardName +" amount updated correctly")
+                    logger.info (cardName +" amount updated correctly")
                 else if (result ==="inserted")
-                    console.log (cardName +" inserted correctly")
+                    logger.info (cardName +" inserted correctly")
             })                     
         }            
         else {
-            console.log (cardName +" does not exists")
+            logger.info (cardName +" does not exists")
             var cardExists="false"
         }
         res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -163,7 +163,7 @@ app.get('/inscription', function (req, res) {
 
 app.post('/inscription', function (req, res) {    
     db.addUser(req.body.name, req.body.surname, req.body.email, req.body.username, req.body.password, req.body.birthdate, function() {
-        console.log ("User inserted correctly to database")
+        logger.info ("User inserted correctly to database")
         res.redirect(`/add-book?username=${req.body.username}`)
     })
 })
@@ -174,7 +174,7 @@ app.post('/updateCard', function (req, res) {
     })    
 })
 
-app.post('/update-deck', function(req, res) {       
+app.post('/update-deck', function(req, res) {      
     var name = req.body.name;
     var looses = parseInt(req.body.looses);
     var guild = req.body.guild;
@@ -233,7 +233,7 @@ app.get('/mybooks', function (req, res) {
 
 app.post('/bookread', function(req,res) {
     db.setBookAsRead(req.body.bookId, req.session.username, function(result) {
-        console.log("bookRead inserted + result")
+        logger.info("bookRead inserted + result")
         res.writeHead(200, { 'Content-Type': 'application/json' });                   
         res.write('200')
         res.end(); 
